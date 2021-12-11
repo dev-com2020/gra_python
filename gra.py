@@ -1,3 +1,5 @@
+import random
+
 import pgzrun
 
 from pgzero.keyboard import keyboard
@@ -7,10 +9,18 @@ from pgzhelper import *
 WIDTH = 800
 HEIGHT = 600
 # BACKG = "back.png"
-BACKG = Actor("back.png")
+background_image = "back.png"
+backgrounds = []
+BACKG = Actor(background_image)
+backgrounds.append(BACKG)
 BACKG.scale = 0.9
 BACKG.x = 100
 BACKG.y = 60
+BACKG = Actor(background_image)
+BACKG.scale = 0.9
+BACKG.x = -100
+BACKG.y = 60
+backgrounds.append(BACKG)
 
 runner = Actor('walk1.png')
 run_images = ['walk1.png', 'walk2.png', 'walk3.png']
@@ -52,9 +62,9 @@ def update():
                 obstacles.remove(actor)
                 score += 1
 
-
-        if keyboard.up:
-            velocity_y = -15
+        if runner.y == 400:
+            if keyboard.up:
+                velocity_y = -15
 
         runner.y += velocity_y
         velocity_y += gravity
@@ -62,16 +72,22 @@ def update():
             velocity_y = 0
             runner.y = 400
 
-
         if runner.collidelist(obstacles) != -1:
             game_over = True
+
+        for BACKG in backgrounds:
+            BACKG.x -= 2
+            if BACKG.x > 800:
+                BACKG.x = - 600
+            BACKG.image = background_image
 
 
 def draw():
     # screen.draw.filled_rect(Rect(0, 0, 800, 400), (163, 232, 254))
     # screen.draw.filled_rect(Rect(0, 400, 800, 200), (88, 242, 152))
 
-    BACKG.draw()
+    for BACKG in backgrounds:
+        BACKG.draw()
 
     if game_over:
         screen.draw.text('KONIEC GRY !!!', centerx=400, centery=200, color=(255, 255, 255), fontsize=60)
