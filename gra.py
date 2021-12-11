@@ -35,29 +35,36 @@ def update():
     runner.animate()
     global velocity_y, obstacles_timeout, score, game_over
 
-    obstacles_timeout += 1
-    if obstacles_timeout > 50:
-        actor = Actor('rock2.png')
-        actor.x = 850
-        actor.y = 530
-        actor.scale = 2
-        obstacles.append(actor)
-        obstacles_timeout = 0
+    if not game_over:
 
-    for actor in obstacles:
-        actor.x -= 8
+        obstacles_timeout += 1
+        if obstacles_timeout > 50:
+            actor = Actor('rock2.png')
+            actor.x = 850
+            actor.y = 400
+            actor.scale = 2
+            obstacles.append(actor)
+            obstacles_timeout = 0
 
-    if keyboard.up:
-        velocity_y = -15
+        for actor in obstacles:
+            actor.x -= 8
+            if actor.x < -10:
+                obstacles.remove(actor)
+                score += 1
 
-    runner.y += velocity_y
-    velocity_y += gravity
-    if runner.y > 400:
-        velocity_y = 0
-        runner.y = 400
 
-    if runner.collidelist(obstacles) != -1:
-        game_over = True
+        if keyboard.up:
+            velocity_y = -15
+
+        runner.y += velocity_y
+        velocity_y += gravity
+        if runner.y > 400:
+            velocity_y = 0
+            runner.y = 400
+
+
+        if runner.collidelist(obstacles) != -1:
+            game_over = True
 
 
 def draw():
@@ -65,10 +72,11 @@ def draw():
     # screen.draw.filled_rect(Rect(0, 400, 800, 200), (88, 242, 152))
 
     BACKG.draw()
-    runner.draw()
+
     if game_over:
-        screen.draw.text('KONIEC GRY:', centerx=400, centery=200, color=(255, 255, 255), fontsize=60)
+        screen.draw.text('KONIEC GRY !!!', centerx=400, centery=200, color=(255, 255, 255), fontsize=60)
         screen.draw.text('WYNIK:' + str(score), centerx=400, centery=300, color=(255, 255, 255), fontsize=60)
+
     else:
         runner.draw()
         for actor in obstacles:
