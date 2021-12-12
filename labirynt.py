@@ -8,6 +8,7 @@ WIDTH = TILE_SIZE * 8
 HEIGHT = TILE_SIZE * 8
 
 tiles = ['empty', 'wall', 'goal', 'door', 'key']
+unlock = 0
 
 maze = [
     [1, 1, 1, 1, 1, 1, 1, 1],
@@ -21,8 +22,8 @@ maze = [
 ]
 
 player = Actor("walk1.png", anchor=(0, 0), pos=(1 * TILE_SIZE, 1 * TILE_SIZE))
-enemy = Actor("trap1.png", anchor=(0, 0), pos=(3 * TILE_SIZE, 6 * TILE_SIZE))
-
+enemy = Actor("trap1.png", anchor=(0, 0), pos=(1 * TILE_SIZE, 4 * TILE_SIZE))
+enemy.yv = -1
 
 def draw():
     screen.clear()
@@ -55,6 +56,26 @@ def on_key_down(key):
     global unlock
     if tile == "goal":
         print("KONIEC GRY, BRAWO!")
+        exit()
+    elif tile == 'key':
+        unlock = unlock + 1
+        maze[row][column] = 0
+    elif tile == 'door' and unlock > 0:
+        unlock = unlock - 1
+        maze[row][column] = 0
+
+    row = int(enemy.y / TILE_SIZE)
+    column = int(enemy.x / TILE_SIZE)
+    row = row + enemy.yv
+    tile = tiles[maze[row][column]]
+    if not tile == 'wall':
+        x = column * TILE_SIZE
+        y = row * TILE_SIZE
+        animate(enemy, duration=0.1, pos=(x, y))
+    else:
+        enemy.yv = enemy.yv * -1
+    if enemy.colliderect(player):
+        print("O NIE!!!")
         exit()
 
 
