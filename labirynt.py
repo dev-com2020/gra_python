@@ -7,21 +7,21 @@ TILE_SIZE = 64
 WIDTH = TILE_SIZE * 8
 HEIGHT = TILE_SIZE * 8
 
-tiles = ['empty', 'wall', 'goal']
+tiles = ['empty', 'wall', 'goal', 'door', 'key']
 
 maze = [
     [1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 0, 0, 2, 0, 1],
-    [1, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 3, 1, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 1, 1],
     [1, 0, 0, 0, 1, 1, 0, 1],
     [1, 0, 1, 1, 1, 0, 0, 1],
-    [1, 0, 0, 0, 1, 0, 0, 1],
+    [1, 0, 0, 0, 0, 4, 0, 1],
     [1, 1, 1, 1, 1, 1, 1, 1],
 ]
 
 player = Actor("walk1.png", anchor=(0, 0), pos=(1 * TILE_SIZE, 1 * TILE_SIZE))
-enemy = Actor("rock2.png", anchor=(0, 0), pos=(3 * TILE_SIZE, 6 * TILE_SIZE))
+enemy = Actor("trap1.png", anchor=(0, 0), pos=(3 * TILE_SIZE, 6 * TILE_SIZE))
 
 
 def draw():
